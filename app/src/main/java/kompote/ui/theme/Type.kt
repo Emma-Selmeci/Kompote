@@ -1,4 +1,4 @@
-package com.example.kompote.ui.theme
+package kompote.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
