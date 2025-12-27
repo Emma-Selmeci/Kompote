@@ -58,7 +58,12 @@ LazyHorizontalGrid(
     contentPadding = 
     horizontalArrangement = 
     verticalArrangement =
-)
+    userScrollEnabled = false
+) {
+    items(itemList) {
+        // lambda here to set content
+    }
+}
 ```
 
 ### Text
@@ -89,3 +94,11 @@ https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images?c
 ## String best practice
 
 https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-add-images#6
+
+## User Interaction
+
+https://developer.android.com/develop/ui/compose/touch-input/user-interactions/handling-interactions
+
+## Higher-order functions and (trailing) lambdas
+
+https://kotlinlang.org/docs/lambdas.html#invoking-a-function-type-instance
