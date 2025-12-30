@@ -7,7 +7,9 @@ import kompote.domain.AppDataLoader
 import kompote.domain.TaskListRepository
 import java.io.File
 
-class AppInitializer {
+class AppInitializer(
+    private val taskListRepository: TaskListRepository
+    ) {
     fun init() {
         val rootDirectory = File(
             Environment.getExternalStorageDirectory(),
@@ -16,7 +18,7 @@ class AppInitializer {
 
         val textFileReader = TextFileReader()
         val taskListParser = TaskListParser()
-        val taskListRepository = TaskListRepository()
+
         val loader = AppDataLoader(
             rootDirectory,
             textFileReader,

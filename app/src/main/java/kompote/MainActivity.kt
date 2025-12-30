@@ -6,44 +6,37 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kompote.ui.mainmenu.MainMenu
-import kompote.ui.mainmenu.getMainMenuItems
-import kompote.ui.misc.LoadingScreen
+import kompote.ui.MainScreen
+import kompote.ui.MainViewModel
 import kompote.ui.theme.KompoteTheme
 
 private const val REQUEST_CODE_STORAGE = 100
 class MainActivity : ComponentActivity() {
 
-    var isReadPermissionGranted by mutableStateOf(false)
-    val appInitializer = AppInitializer()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        if(!checkIsReadPermissionGranted()) {
-            requestPermission()
+        if(hasPermission()) {
+            AppInitializer(viewModel.taskListRepository).init()
+            viewModel.onAppDataReady()
         } else {
-            appInitializer.init()
-            isReadPermissionGranted = true
+            requestPermission()
         }
 
         setContent {
             KompoteTheme {
-                if (isReadPermissionGranted)
-                    MainMenu(getMainMenuItems())
-                else
-                    LoadingScreen()
+                MainScreen(viewModel)
             }
         }
     }
 
-    private fun checkIsReadPermissionGranted(): Boolean {
+    private fun hasPermission(): Boolean {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -61,8 +54,8 @@ class MainActivity : ComponentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                appInitializer.init()
-                isReadPermissionGranted = true
+                AppInitializer(viewModel.taskListRepository).init()
+                viewModel.onAppDataReady()
             }
         }
     }
