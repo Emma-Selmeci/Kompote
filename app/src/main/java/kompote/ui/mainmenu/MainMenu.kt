@@ -29,6 +29,6 @@ fun MainMenu(content: List<MainMenuItem>, modifier: Modifier = Modifier) {
 @Composable
 private fun MainMenuPreview() {
     KompoteTheme {
-        MainMenu(getMainMenuItems())
+        //MainMenu(getMainMenuItems())
     }
 }

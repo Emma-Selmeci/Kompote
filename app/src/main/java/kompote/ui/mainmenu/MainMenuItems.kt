@@ -7,13 +7,17 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.Color
+import kompote.ui.MainViewModel
+import kompote.ui.Screen
 
-fun getMainMenuItems(): List<MainMenuItem> = listOf(
+fun getMainMenuItems(viewModel: MainViewModel): List<MainMenuItem> = listOf(
     MainMenuItem(
         "Home",
         Icons.Default.Home,
         Color(0xFFAAFF00)
-    ) {},
+    ) {
+        viewModel.currentScreen = Screen.TaskList
+    },
     MainMenuItem(
         "School",
         Icons.Default.DateRange,
