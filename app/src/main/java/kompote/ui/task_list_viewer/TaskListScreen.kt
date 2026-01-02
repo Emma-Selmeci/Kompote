@@ -8,7 +8,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun TaskListScreen(viewModel: TaskListViewerViewModel, modifier: Modifier = Modifier) {
+fun TaskListScreen(
+    viewModel: TaskListViewerViewModel,
+    modifier: Modifier = Modifier
+) {
     val uiState: TaskListViewerUiState = viewModel.uiState
     Box(
         contentAlignment = Alignment.Center,

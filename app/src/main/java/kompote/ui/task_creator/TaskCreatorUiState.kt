@@ -1,3 +1,3 @@
 package kompote.ui.task_creator
 
-class TaskCreatorUiState
+data class TaskCreatorUiState(val taskString: String)

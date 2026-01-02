@@ -12,7 +12,10 @@ import androidx.core.content.ContextCompat
 import kompote.domain.TaskListRepository
 import kompote.ui.App
 import kompote.ui.Screen
+import kompote.ui.mainmenu.MainMenuViewModel
 import kompote.ui.navigation.ScreenStateViewModel
+import kompote.ui.task_creator.TaskCreatorViewModel
+import kompote.ui.task_list_viewer.TaskListViewerViewModel
 import kompote.ui.theme.KompoteTheme
 
 private const val REQUEST_CODE_STORAGE = 100
@@ -20,6 +23,15 @@ class MainActivity : ComponentActivity() {
 
     private val screenStateViewModel: ScreenStateViewModel by viewModels()
     private val taskListRepository = TaskListRepository()
+    private val mainMenuViewModel by lazy {
+        MainMenuViewModel {screenStateViewModel.navigate(it)}
+    }
+    private val taskListViewerViewModel by lazy {
+        TaskListViewerViewModel(taskListRepository)
+    }
+    private val taskCreatorViewModel by lazy {
+        TaskCreatorViewModel(taskListRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             KompoteTheme {
-                App(screenStateViewModel, taskListRepository)
+                App(screenStateViewModel, mainMenuViewModel, taskListViewerViewModel, taskCreatorViewModel)
             }
         }
     }
