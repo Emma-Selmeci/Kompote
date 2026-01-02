@@ -20,6 +20,6 @@ class TaskListViewerViewModel(
     }
 
     private fun getTasksCsvString(): String {
-        return taskListRepository.getTaskList().tasks.joinToString(", ")
+        return taskListRepository.taskList.value.joinToString(", ")
     }
 }

@@ -17,7 +17,7 @@ class TaskCreatorViewModel(
 
     fun onClick() {
         if(uiState.taskString.isEmpty()) return
-        // call to domain
+        taskListRepository.addTask(uiState.taskString)
     }
 
 }

@@ -9,36 +9,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kompote.domain.TaskListRepository
 import kompote.ui.App
 import kompote.ui.Screen
-import kompote.ui.mainmenu.MainMenuViewModel
+import kompote.ui.misc.LoadingScreen
 import kompote.ui.navigation.ScreenStateViewModel
-import kompote.ui.task_creator.TaskCreatorViewModel
-import kompote.ui.task_list_viewer.TaskListViewerViewModel
 import kompote.ui.theme.KompoteTheme
 
 private const val REQUEST_CODE_STORAGE = 100
 class MainActivity : ComponentActivity() {
-
     private val screenStateViewModel: ScreenStateViewModel by viewModels()
-    private val taskListRepository = TaskListRepository()
-    private val mainMenuViewModel by lazy {
-        MainMenuViewModel {screenStateViewModel.navigate(it)}
-    }
-    private val taskListViewerViewModel by lazy {
-        TaskListViewerViewModel(taskListRepository)
-    }
-    private val taskCreatorViewModel by lazy {
-        TaskCreatorViewModel(taskListRepository)
-    }
+    private val appInitializer = AppInitializer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         if(hasPermission()) {
-            AppInitializer(taskListRepository).init()
+            appInitializer.init()
+            screenStateViewModel.onAppInitialized(
+                appInitializer.taskListRepository
+            )
             screenStateViewModel.navigate(Screen.MainMenu)
         } else {
             requestPermission()
@@ -46,19 +36,26 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             KompoteTheme {
-                App(screenStateViewModel, mainMenuViewModel, taskListViewerViewModel, taskCreatorViewModel)
+                if(screenStateViewModel.isInitialized) {
+                    App(
+                        screenStateViewModel,
+                        screenStateViewModel.repository!!
+                    )
+                } else {
+                    LoadingScreen()
+                }
             }
         }
     }
 
     private fun hasPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
             REQUEST_CODE_STORAGE
         )
     }
@@ -69,7 +66,10 @@ class MainActivity : ComponentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                AppInitializer(taskListRepository).init()
+                appInitializer.init()
+                screenStateViewModel.onAppInitialized(
+                    appInitializer.taskListRepository
+                )
                 screenStateViewModel.navigate(Screen.MainMenu)
             }
         }
