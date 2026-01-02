@@ -7,5 +7,5 @@ data class MainMenuItem(
     val name: String,
     val icon: ImageVector,
     val color: Color,
-    val onClick: () -> Unit
+    val onClickAction: MainMenuAction
     )

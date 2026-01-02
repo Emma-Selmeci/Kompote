@@ -9,29 +9,32 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kompote.ui.MainScreen
-import kompote.ui.MainViewModel
+import kompote.domain.TaskListRepository
+import kompote.ui.App
+import kompote.ui.Screen
+import kompote.ui.navigation.ScreenStateViewModel
 import kompote.ui.theme.KompoteTheme
 
 private const val REQUEST_CODE_STORAGE = 100
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val screenStateViewModel: ScreenStateViewModel by viewModels()
+    private val taskListRepository = TaskListRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         if(hasPermission()) {
-            AppInitializer(viewModel.taskListRepository).init()
-            viewModel.onAppDataReady()
+            AppInitializer(taskListRepository).init()
+            screenStateViewModel.navigate(Screen.MainMenu)
         } else {
             requestPermission()
         }
 
         setContent {
             KompoteTheme {
-                MainScreen(viewModel)
+                App(screenStateViewModel, taskListRepository)
             }
         }
     }
@@ -54,8 +57,8 @@ class MainActivity : ComponentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                AppInitializer(viewModel.taskListRepository).init()
-                viewModel.onAppDataReady()
+                AppInitializer(taskListRepository).init()
+                screenStateViewModel.navigate(Screen.MainMenu)
             }
         }
     }

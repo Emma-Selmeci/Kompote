@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import kompote.ui.theme.KompoteTheme
 
 @Composable
-fun MainMenu(content: List<MainMenuItem>, modifier: Modifier = Modifier) {
+fun MainMenu(content: List<MainMenuItem>, onAction: (MainMenuAction) -> Unit, modifier: Modifier = Modifier) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -20,7 +20,11 @@ fun MainMenu(content: List<MainMenuItem>, modifier: Modifier = Modifier) {
         modifier = modifier.padding(10.dp)
     ) {
         items(content) {
-            item -> MainMenuTile(item)
+            item -> MainMenuTile(
+            item,
+            {onAction(item.onClickAction)},
+            modifier
+            )
         }
     }
 }
@@ -29,6 +33,9 @@ fun MainMenu(content: List<MainMenuItem>, modifier: Modifier = Modifier) {
 @Composable
 private fun MainMenuPreview() {
     KompoteTheme {
-        //MainMenu(getMainMenuItems())
+        MainMenu(
+            getMainMenuItems(),
+            {}
+        )
     }
 }

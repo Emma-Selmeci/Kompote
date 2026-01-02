@@ -1,41 +1,21 @@
 package kompote.ui.mainmenu
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.Color
-import kompote.ui.MainViewModel
-import kompote.ui.Screen
 
-fun getMainMenuItems(viewModel: MainViewModel): List<MainMenuItem> = listOf(
+fun getMainMenuItems(): List<MainMenuItem> = listOf(
     MainMenuItem(
-        "Home",
-        Icons.Default.Home,
-        Color(0xFFAAFF00)
-    ) {
-        viewModel.currentScreen = Screen.TaskList
-    },
-    MainMenuItem(
-        "School",
+        "View Tasks",
         Icons.Default.DateRange,
-        Color(0xFFFFFF33)
-    ) {},
+        Color(0xFFAAFF00),
+        MainMenuAction.OPEN_TASK_LIST
+    ),
     MainMenuItem(
-        "On way",
-        Icons.Default.LocationOn,
-        Color(0xFFFFAA33)
-    ) {},
-    MainMenuItem(
-        "Cooking",
-        Icons.Default.ShoppingCart,
-        Color(0xFFFF3333)
-    ) {},
-    MainMenuItem(
-        "People",
-        Icons.Default.AccountCircle,
-        Color(0xFFCF9FFF)
-    ) {},
+        "Add New Task",
+        Icons.Default.Add,
+        Color(0xFFFFFF33),
+        MainMenuAction.CREATE_TASK
+    )
 )

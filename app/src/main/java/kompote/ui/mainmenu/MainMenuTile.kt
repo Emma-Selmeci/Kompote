@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun MainMenuTile(content: MainMenuItem, modifier: Modifier = Modifier) {
+fun MainMenuTile(content: MainMenuItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
@@ -26,7 +26,7 @@ fun MainMenuTile(content: MainMenuItem, modifier: Modifier = Modifier) {
             .aspectRatio(1f)
             .clickable(
                 interactionSource = interactionSource,
-                onClick = content.onClick
+                onClick = { onClick() }
             )
     ) {
         Column(
