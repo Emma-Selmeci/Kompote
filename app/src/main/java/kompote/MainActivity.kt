@@ -27,7 +27,8 @@ class MainActivity : ComponentActivity() {
         if(hasPermission()) {
             appInitializer.init()
             screenStateViewModel.onAppInitialized(
-                appInitializer.taskListRepository
+                appInitializer.taskListRepository,
+                appInitializer.planRepository
             )
             screenStateViewModel.navigate(Screen.MainMenu)
         } else {
@@ -39,7 +40,8 @@ class MainActivity : ComponentActivity() {
                 if(screenStateViewModel.isInitialized) {
                     App(
                         screenStateViewModel,
-                        screenStateViewModel.repository!!
+                        screenStateViewModel.taskListRepository!!,
+                        screenStateViewModel.planRepository!!
                     )
                 } else {
                     LoadingScreen()
@@ -60,6 +62,7 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    @Deprecated("If it runs on my device, it's good for now")
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
@@ -68,7 +71,8 @@ class MainActivity : ComponentActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 appInitializer.init()
                 screenStateViewModel.onAppInitialized(
-                    appInitializer.taskListRepository
+                    appInitializer.taskListRepository,
+                    appInitializer.planRepository
                 )
                 screenStateViewModel.navigate(Screen.MainMenu)
             }

@@ -37,6 +37,8 @@ Like a Swing JPanel
 ### Row and Column
 
 ```
+import androidx.compose.foundation.lazy.items
+
 Column(
     verticalArrangement = Arrangement.spacedBy(10.dp)
     contentPadding = PaddingValues(horizontal = 10.dp)
@@ -63,6 +65,20 @@ LazyHorizontalGrid(
     items(itemList) {
         // lambda here to set content
     }
+}
+```
+
+### Scaffold
+
+```
+Safold(
+    topBar = {...}
+    bottomBar = {...}
+) {
+    innerPadding ->
+    LazyColumn(
+        modifier = modifier.padding(innerPadding)
+    ) {}
 }
 ```
 

@@ -1,9 +1,12 @@
 package kompote.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kompote.domain.PlanRepository
 import kompote.domain.TaskListRepository
+import kompote.ui.calendar.CalendarScreen
+import kompote.ui.calendar.CalendarViewModel
+import kompote.ui.calendar.CalendarViewModelFactory
 import kompote.ui.mainmenu.MainMenu
 import kompote.ui.mainmenu.MainMenuViewModel
 import kompote.ui.mainmenu.MainMenuViewModelFactory
@@ -16,22 +19,30 @@ import kompote.ui.task_creator.TaskCreatorViewModelFactory
 import kompote.ui.task_list_viewer.TaskListScreen
 import kompote.ui.task_list_viewer.TaskListViewerViewModel
 import kompote.ui.task_list_viewer.TaskListViewerViewModelFactory
+import java.time.LocalDate
 
 @Composable
 fun App(
     screenStateViewModel: ScreenStateViewModel,
     taskListRepository: TaskListRepository,
+    planRepository: PlanRepository
 ) {
-    Log.i("Kompote", "Entered App composable")
     when(screenStateViewModel.screen) {
 
         Screen.Loading -> LoadingScreen()
 
         Screen.MainMenu -> {
-            val viewModel: MainMenuViewModel = viewModel( //viewModel name not recognised
+            val viewModel: MainMenuViewModel = viewModel(
                 factory = MainMenuViewModelFactory (screenStateViewModel::navigate)
             )
             MainMenu(getMainMenuItems(), viewModel::onAction)
+        }
+
+        Screen.Calendar -> {
+            val viewModel: CalendarViewModel = viewModel(
+                factory = CalendarViewModelFactory(planRepository, LocalDate.now(), screenStateViewModel::navigate)
+            )
+            CalendarScreen(viewModel)
         }
 
         Screen.TaskListViewer -> {
