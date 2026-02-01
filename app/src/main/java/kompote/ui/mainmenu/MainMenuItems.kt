@@ -7,6 +7,12 @@ import androidx.compose.ui.graphics.Color
 
 fun getMainMenuItems(): List<MainMenuItem> = listOf(
     MainMenuItem(
+        "Calendar",
+        Icons.Default.DateRange,
+        Color(0xFFFFFF33),
+        MainMenuAction.CALENDAR
+    ),
+    MainMenuItem(
         "View Tasks",
         Icons.Default.DateRange,
         Color(0xFFAAFF00),

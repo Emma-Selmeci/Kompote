@@ -3,6 +3,7 @@ package kompote.ui.calendar
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -22,13 +23,13 @@ fun CalendarContent(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = {SimpleTopBar(uiState.dayString,{}, modifier)},
-        bottomBar = {CalendarBottomBar(onPreviousClick,onNextClick, modifier)},
-        modifier = modifier
+        topBar = {SimpleTopBar(uiState.dayString,{})},
+        bottomBar = {CalendarBottomBar(onPreviousClick,onNextClick)},
+        modifier = modifier.systemBarsPadding()
     ) {
         innerPadding ->
         LazyColumn(
-            modifier = modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             items(uiState.events) {
                 CalendarEntry(it)
@@ -48,13 +49,13 @@ fun CalendarBottomBar(
     ) {
         Button(
             onClick = onPreviousClick,
-            modifier.weight(1f)
+            Modifier.weight(1f)
         ) {
             Text("Previous")
         }
         Button(
             onClick = onNextClick,
-            modifier.weight(1f)
+            Modifier.weight(1f)
         ) {
             Text("Next")
         }

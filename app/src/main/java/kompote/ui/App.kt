@@ -1,6 +1,7 @@
 package kompote.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kompote.domain.PlanRepository
 import kompote.domain.TaskListRepository
@@ -25,7 +26,8 @@ import java.time.LocalDate
 fun App(
     screenStateViewModel: ScreenStateViewModel,
     taskListRepository: TaskListRepository,
-    planRepository: PlanRepository
+    planRepository: PlanRepository,
+    modifier: Modifier = Modifier
 ) {
     when(screenStateViewModel.screen) {
 
@@ -35,14 +37,14 @@ fun App(
             val viewModel: MainMenuViewModel = viewModel(
                 factory = MainMenuViewModelFactory (screenStateViewModel::navigate)
             )
-            MainMenu(getMainMenuItems(), viewModel::onAction)
+            MainMenu(getMainMenuItems(), viewModel::onAction, modifier)
         }
 
         Screen.Calendar -> {
             val viewModel: CalendarViewModel = viewModel(
                 factory = CalendarViewModelFactory(planRepository, LocalDate.now(), screenStateViewModel::navigate)
             )
-            CalendarScreen(viewModel)
+            CalendarScreen(viewModel, modifier)
         }
 
         Screen.TaskListViewer -> {

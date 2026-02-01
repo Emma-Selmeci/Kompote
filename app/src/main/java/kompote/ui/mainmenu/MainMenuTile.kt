@@ -26,17 +26,15 @@ fun MainMenuTile(content: MainMenuItem, onClick: () -> Unit, modifier: Modifier 
             .aspectRatio(1f)
             .clickable(
                 interactionSource = interactionSource,
-                onClick = { onClick() }
+                onClick = onClick
             )
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 imageVector = content.icon,
-                contentDescription = null,
-                modifier = modifier
+                contentDescription = null
             )
             Text(
                 content.name
