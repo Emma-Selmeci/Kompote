@@ -10,8 +10,9 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kompote.ui.App
-import kompote.ui.Screen
 import kompote.ui.misc.LoadingScreen
+import kompote.ui.navigation.NavigationIntent
+import kompote.ui.navigation.Screen
 import kompote.ui.navigation.ScreenStateViewModel
 import kompote.ui.theme.KompoteTheme
 
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 appInitializer.taskListRepository,
                 appInitializer.planRepository
             )
-            screenStateViewModel.navigate(Screen.MainMenu)
+            screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
         } else {
             requestPermission()
         }
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                     appInitializer.taskListRepository,
                     appInitializer.planRepository
                 )
-                screenStateViewModel.navigate(Screen.MainMenu)
+                screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
             }
         }
     }

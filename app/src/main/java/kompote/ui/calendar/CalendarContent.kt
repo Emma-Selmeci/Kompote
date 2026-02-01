@@ -20,10 +20,11 @@ fun CalendarContent(
     uiState: CalendarUiState,
     onPreviousClick: () -> Unit,
     onNextClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = {SimpleTopBar(uiState.dayString,{})},
+        topBar = {SimpleTopBar(uiState.dayString,onBackClick)},
         bottomBar = {CalendarBottomBar(onPreviousClick,onNextClick)},
         modifier = modifier.systemBarsPadding()
     ) {
@@ -80,6 +81,7 @@ fun CalendarContentPreview() {
                     "Buying books (17:00-18:00)"
                 )
             ),
+            {},
             {},
             {}
         )

@@ -6,13 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import kompote.domain.PlanRepository
-import kompote.ui.Screen
+import kompote.ui.navigation.NavigationIntent
 import java.time.LocalDate
 
 class CalendarViewModel(
     private val planRepository: PlanRepository,
     initialDay: LocalDate,
-    private val onNavigate: (Screen) -> Unit
+    private val onNavigate: (NavigationIntent) -> Unit
 ): ViewModel() {
 
     private var currentDay by mutableStateOf(initialDay)
@@ -25,7 +25,7 @@ class CalendarViewModel(
 
     fun onEvent(event: CalendarEvent) {
         when(event) {
-            is CalendarEvent.Back -> onNavigate(Screen.MainMenu)
+            is CalendarEvent.Back -> onNavigate(NavigationIntent.Back)
             is CalendarEvent.NextDay -> currentDay = currentDay.plusDays(1)
             is CalendarEvent.PreviousDay -> currentDay = currentDay.minusDays(1)
         }

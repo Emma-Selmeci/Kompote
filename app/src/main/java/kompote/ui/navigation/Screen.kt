@@ -1,4 +1,4 @@
-package kompote.ui
+package kompote.ui.navigation
 
 sealed class Screen {
     object Loading: Screen()

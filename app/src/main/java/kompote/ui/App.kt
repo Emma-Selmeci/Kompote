@@ -13,6 +13,7 @@ import kompote.ui.mainmenu.MainMenuViewModel
 import kompote.ui.mainmenu.MainMenuViewModelFactory
 import kompote.ui.mainmenu.getMainMenuItems
 import kompote.ui.misc.LoadingScreen
+import kompote.ui.navigation.Screen
 import kompote.ui.navigation.ScreenStateViewModel
 import kompote.ui.task_creator.TaskCreatorScreen
 import kompote.ui.task_creator.TaskCreatorViewModel
@@ -35,14 +36,18 @@ fun App(
 
         Screen.MainMenu -> {
             val viewModel: MainMenuViewModel = viewModel(
-                factory = MainMenuViewModelFactory (screenStateViewModel::navigate)
+                factory = MainMenuViewModelFactory(onNavigate = {
+                        intent -> screenStateViewModel.navigate(Screen.MainMenu, intent)
+                })
             )
             MainMenu(getMainMenuItems(), viewModel::onAction, modifier)
         }
 
         Screen.Calendar -> {
             val viewModel: CalendarViewModel = viewModel(
-                factory = CalendarViewModelFactory(planRepository, LocalDate.now(), screenStateViewModel::navigate)
+                factory = CalendarViewModelFactory(planRepository, LocalDate.now(), onNavigate = {
+                        intent -> screenStateViewModel.navigate(Screen.Calendar, intent)
+                    })
             )
             CalendarScreen(viewModel, modifier)
         }

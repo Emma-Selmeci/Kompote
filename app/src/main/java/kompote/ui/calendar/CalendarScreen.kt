@@ -15,6 +15,7 @@ fun CalendarScreen(viewModel: CalendarViewModel, modifier: Modifier = Modifier) 
         viewModel.uiState,
         {viewModel.onEvent(CalendarEvent.PreviousDay())},
         {viewModel.onEvent(CalendarEvent.NextDay())},
+        {viewModel.onEvent(CalendarEvent.Back())},
         modifier
     )
 }

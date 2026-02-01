@@ -2,10 +2,10 @@ package kompote.ui.mainmenu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kompote.ui.Screen
+import kompote.ui.navigation.NavigationIntent
 
 class MainMenuViewModelFactory(
-    private val onNavigate: (Screen) -> Unit
+    private val onNavigate: (NavigationIntent) -> Unit
 ): ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
