@@ -1,5 +1,6 @@
 package kompote.ui.calendar
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,9 @@ fun CalendarContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    BackHandler {
+        onBackClick()
+    }
     Scaffold(
         topBar = {SimpleTopBar(uiState.dayString,onBackClick)},
         bottomBar = {CalendarBottomBar(onPreviousClick,onNextClick)},
