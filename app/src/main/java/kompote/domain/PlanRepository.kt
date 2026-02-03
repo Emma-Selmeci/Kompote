@@ -15,4 +15,14 @@ class PlanRepository(
         Log.e("Loading#", _plan.value.toString())
     }
     fun getEventsForDay(day: LocalDate) = _plan.value[day] ?: emptyList()
+
+    fun addTaskToDay(day: LocalDate, task: String) {
+        val updatedListForDay = _plan.value[day]
+            ?.plus(task)
+            ?: listOf(task)
+
+        _plan.value = _plan.value + (day to updatedListForDay)
+
+        dataSource.savePlans(_plan.value)
+    }
 }

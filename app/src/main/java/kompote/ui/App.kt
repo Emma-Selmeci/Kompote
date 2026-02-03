@@ -14,6 +14,9 @@ import kompote.ui.mainmenu.getMainMenuItems
 import kompote.ui.misc.LoadingScreen
 import kompote.ui.navigation.Screen
 import kompote.ui.navigation.ScreenStateViewModel
+import kompote.ui.taskCreator.TaskCreatorScreen
+import kompote.ui.taskCreator.TaskCreatorViewModel
+import kompote.ui.taskCreator.TaskCreatorViewModelFactory
 import java.time.LocalDate
 
 @Composable
@@ -42,6 +45,16 @@ fun App(
                     })
             )
             CalendarScreen(viewModel, modifier)
+        }
+
+        Screen.TaskCreator -> {
+            val viewModel: TaskCreatorViewModel = viewModel (
+                factory = TaskCreatorViewModelFactory(
+                    planRepository,
+                    {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)},
+                    LocalDate.now())
+            )
+            TaskCreatorScreen(viewModel, modifier)
         }
 
     }

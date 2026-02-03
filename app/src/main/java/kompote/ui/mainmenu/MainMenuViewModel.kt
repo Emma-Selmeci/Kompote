@@ -10,6 +10,7 @@ class MainMenuViewModel(
     fun onAction(action: MainMenuAction) {
         when(action) {
             MainMenuAction.CALENDAR -> onNavigate(NavigationIntent.To(Screen.Calendar))
+            MainMenuAction.TASK_CREATOR -> onNavigate(NavigationIntent.To(Screen.TaskCreator))
         }
     }
 }

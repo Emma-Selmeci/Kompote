@@ -1,5 +1,6 @@
 package kompote.ui.mainmenu
 
 enum class MainMenuAction {
-    CALENDAR
+    CALENDAR,
+    TASK_CREATOR
 }

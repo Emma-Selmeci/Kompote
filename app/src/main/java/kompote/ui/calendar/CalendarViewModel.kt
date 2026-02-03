@@ -10,7 +10,7 @@ import kompote.ui.navigation.NavigationIntent
 import java.time.LocalDate
 
 class CalendarViewModel(
-    private val planRepository: PlanRepository,
+    planRepository: PlanRepository,
     initialDay: LocalDate,
     private val onNavigate: (NavigationIntent) -> Unit
 ): ViewModel() {
