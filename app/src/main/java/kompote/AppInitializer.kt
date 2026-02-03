@@ -6,6 +6,8 @@ import kompote.data.TaskListSerializer
 import kompote.data.TextFileReader
 import kompote.data.TextFileWriter
 import kompote.data.plan.DBPlanDataSource
+import kompote.data.plan.PlanParser
+import kompote.data.plan.PlanSerializer
 import kompote.domain.AppDataLoader
 import kompote.domain.PlanRepository
 import kompote.domain.TaskListRepository
@@ -22,17 +24,26 @@ class AppInitializer() {
 
         val reader = TextFileReader()
         val writer = TextFileWriter()
+
         val taskListParser = TaskListParser()
         val taskListSerializer = TaskListSerializer()
+
+        val planDataSource = DBPlanDataSource(
+            reader,
+            writer,
+            PlanParser(),
+            PlanSerializer(),
+            rootDirectory
+        )
+
+        planRepository = PlanRepository(
+            planDataSource
+        )
 
         taskListRepository = TaskListRepository(
             rootDirectory,
             writer,
             taskListSerializer
-        )
-
-        planRepository = PlanRepository(
-            DBPlanDataSource()
         )
 
         val loader = AppDataLoader(
@@ -43,5 +54,7 @@ class AppInitializer() {
         )
 
         loader.loadAppData()
+
+        planRepository.load()
     }
 }
