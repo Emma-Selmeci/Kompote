@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
         if(hasPermission()) {
             appInitializer.init()
             screenStateViewModel.onAppInitialized(
-                appInitializer.taskListRepository,
                 appInitializer.planRepository
             )
             screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
@@ -41,7 +40,6 @@ class MainActivity : ComponentActivity() {
                 if(screenStateViewModel.isInitialized) {
                     App(
                         screenStateViewModel,
-                        screenStateViewModel.taskListRepository!!,
                         screenStateViewModel.planRepository!!
                     )
                 } else {
@@ -72,7 +70,6 @@ class MainActivity : ComponentActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 appInitializer.init()
                 screenStateViewModel.onAppInitialized(
-                    appInitializer.taskListRepository,
                     appInitializer.planRepository
                 )
                 screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
