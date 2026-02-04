@@ -17,6 +17,9 @@ import kompote.ui.navigation.ScreenStateViewModel
 import kompote.ui.taskCreator.TaskCreatorScreen
 import kompote.ui.taskCreator.TaskCreatorViewModel
 import kompote.ui.taskCreator.TaskCreatorViewModelFactory
+import kompote.ui.taskManager.TaskManagerScreen
+import kompote.ui.taskManager.TaskManagerViewModel
+import kompote.ui.taskManager.TaskManagerViewModelFactory
 import java.time.LocalDate
 
 @Composable
@@ -57,5 +60,14 @@ fun App(
             TaskCreatorScreen(viewModel, modifier)
         }
 
+        Screen.TaskManager -> {
+            val viewModel: TaskManagerViewModel = viewModel (
+                factory = TaskManagerViewModelFactory(
+                    planRepository,
+                    LocalDate.now(),
+                    {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)})
+            )
+            TaskManagerScreen(viewModel, modifier)
+        }
     }
 }

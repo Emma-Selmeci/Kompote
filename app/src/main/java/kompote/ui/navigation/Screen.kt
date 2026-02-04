@@ -5,4 +5,5 @@ sealed class Screen {
     object MainMenu: Screen()
     object Calendar: Screen()
     object TaskCreator: Screen()
+    object TaskManager: Screen()
 }
