@@ -27,9 +27,7 @@ class MainActivity : ComponentActivity() {
 
         if(hasPermission()) {
             appInitializer.init()
-            screenStateViewModel.onAppInitialized(
-                appInitializer.planRepository
-            )
+            screenStateViewModel.onAppInitialized()
             screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
         } else {
             requestPermission()
@@ -40,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 if(screenStateViewModel.isInitialized) {
                     App(
                         screenStateViewModel,
-                        screenStateViewModel.planRepository!!
+                        appInitializer.planRepository
                     )
                 } else {
                     LoadingScreen()
@@ -69,9 +67,7 @@ class MainActivity : ComponentActivity() {
         if (requestCode == REQUEST_CODE_STORAGE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 appInitializer.init()
-                screenStateViewModel.onAppInitialized(
-                    appInitializer.planRepository
-                )
+                screenStateViewModel.onAppInitialized()
                 screenStateViewModel.navigate(Screen.Loading, NavigationIntent.To(Screen.MainMenu))
             }
         }
