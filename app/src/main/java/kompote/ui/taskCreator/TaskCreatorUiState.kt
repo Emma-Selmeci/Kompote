@@ -1,8 +1,9 @@
 package kompote.ui.taskCreator
 
+import kompote.domain.task.TaskDraft
+import java.time.LocalDate
+
 data class TaskCreatorUiState(
-    val dayString: String,
-    val taskString: String,
-    val taskTime: String,
-    val taskDuration: String,
+    val currentDay: LocalDate,
+    val taskDraft: TaskDraft
 )

@@ -53,7 +53,6 @@ fun App(
         Screen.TaskCreator -> {
             val viewModel: TaskCreatorViewModel = viewModel (
                 factory = TaskCreatorViewModelFactory(
-                    planRepository,
                     {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)},
                     LocalDate.now())
             )

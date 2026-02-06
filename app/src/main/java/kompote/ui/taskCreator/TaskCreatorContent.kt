@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kompote.domain.task.TaskDraft
 import kompote.ui.theme.KompoteTheme
+import java.time.LocalDate
 
 @Composable
 fun TaskCreatorContent(
@@ -62,7 +64,7 @@ fun TaskCreatorInnerPadding(
             ) {
                 Text("Previous")
             }
-            Text(uiState.dayString)
+            Text(uiState.currentDay.toString())
             Button(
                 onClick = {onValueChange(TaskCreatorEvent.NextDay())},
             ) {
@@ -70,17 +72,17 @@ fun TaskCreatorInnerPadding(
             }
         }
         TextField(
-            value = uiState.taskString,
+            value = uiState.taskDraft.name,
             onValueChange = { onValueChange(TaskCreatorEvent.TaskNameChange(it)) },
             placeholder = {Text("Task name")}
         )
         TextField(
-            value = uiState.taskTime,
+            value = uiState.taskDraft.time,
             onValueChange = { onValueChange(TaskCreatorEvent.TaskTimeChange(it)) },
             placeholder = {Text("Task time")}
         )
         TextField(
-            value = uiState.taskDuration,
+            value = uiState.taskDraft.duration,
             onValueChange = { onValueChange(TaskCreatorEvent.TaskDurationChange(it)) },
             placeholder = {Text("Task duration")}
         )
@@ -97,7 +99,9 @@ fun TaskCreatorInnerPadding(
 fun TaskCreatorContentPreview() {
     KompoteTheme {
         TaskCreatorContent(
-            TaskCreatorUiState("2026-03-22","","",""),
+            TaskCreatorUiState(
+                LocalDate.of(2026,3,22),
+                        TaskDraft("", "", "")),
             {}
         )
     }
