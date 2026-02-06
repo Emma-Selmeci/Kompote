@@ -16,11 +16,15 @@ class TaskCreatorViewModel(
 ): ViewModel() {
     private var currentDay by mutableStateOf(initialDay)
     private var taskString by mutableStateOf("")
+    private var taskTime by mutableStateOf("")
+    private var taskDuration by mutableStateOf("")
 
     val uiState by derivedStateOf {
         TaskCreatorUiState(
             currentDay.toString(),
-            taskString
+            taskString,
+            taskTime,
+            taskDuration,
         )
     }
 
@@ -38,7 +42,19 @@ class TaskCreatorViewModel(
             is TaskCreatorEvent.Back -> onNavigate(NavigationIntent.Back)
             is TaskCreatorEvent.NextDay -> currentDay = currentDay.plusDays(1)
             is TaskCreatorEvent.PreviousDay -> currentDay = currentDay.minusDays(1)
-            is TaskCreatorEvent.ValueChange -> taskString = event.taskString
+            is TaskCreatorEvent.TaskNameChange -> taskString = event.taskString
+            is TaskCreatorEvent.TaskTimeChange -> {
+                val str = event.taskTimeString
+                if(str.isEmpty() || (str.length < 5 && str.all { it.isDigit() })) {
+                    taskTime = str
+                }
+            }
+            is TaskCreatorEvent.TaskDurationChange -> {
+                val str = event.taskDurationString
+                if(str.isEmpty() || str.all { it.isDigit() }) {
+                    taskDuration = str
+                }
+            }
         }
     }
 }

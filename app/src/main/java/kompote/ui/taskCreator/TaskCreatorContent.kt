@@ -12,10 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,15 +20,11 @@ import kompote.ui.theme.KompoteTheme
 @Composable
 fun TaskCreatorContent(
     uiState: TaskCreatorUiState,
-    onValueChange: (String) -> Unit,
-    onSave: () -> Unit,
-    onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onBackClick: () -> Unit,
+    onEvent: (TaskCreatorEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler {
-        onBackClick()
+        onEvent(TaskCreatorEvent.Back())
     }
     Scaffold(
         modifier = modifier.systemBarsPadding()
@@ -46,10 +38,7 @@ fun TaskCreatorContent(
         ) {
             TaskCreatorInnerPadding(
                 uiState,
-                onValueChange,
-                onSave,
-                onPreviousClick,
-                onNextClick
+                onEvent
             )
         }
     }
@@ -58,35 +47,45 @@ fun TaskCreatorContent(
 @Composable
 fun TaskCreatorInnerPadding(
     uiState: TaskCreatorUiState,
-    onValueChange: (String) -> Unit,
-    onSave: () -> Unit,
-    onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit
+    onValueChange: (TaskCreatorEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = onPreviousClick,
+                onClick = {onValueChange(TaskCreatorEvent.PreviousDay())}
             ) {
                 Text("Previous")
             }
             Text(uiState.dayString)
             Button(
-                onClick = onNextClick,
+                onClick = {onValueChange(TaskCreatorEvent.NextDay())},
             ) {
                 Text("Next")
             }
         }
         TextField(
             value = uiState.taskString,
-            onValueChange = onValueChange
+            onValueChange = { onValueChange(TaskCreatorEvent.TaskNameChange(it)) },
+            placeholder = {Text("Task name")}
+        )
+        TextField(
+            value = uiState.taskTime,
+            onValueChange = { onValueChange(TaskCreatorEvent.TaskTimeChange(it)) },
+            placeholder = {Text("Task time")}
+        )
+        TextField(
+            value = uiState.taskDuration,
+            onValueChange = { onValueChange(TaskCreatorEvent.TaskDurationChange(it)) },
+            placeholder = {Text("Task duration")}
         )
         Button(
-            onClick = onSave
+            onClick = {onValueChange(TaskCreatorEvent.SaveTask())}
         ) {
             Text("Save")
         }
@@ -96,14 +95,9 @@ fun TaskCreatorInnerPadding(
 @Composable
 @Preview
 fun TaskCreatorContentPreview() {
-    var str by remember { mutableStateOf("") }
     KompoteTheme {
         TaskCreatorContent(
-            TaskCreatorUiState("2026-03-22",str),
-            {str = it},
-            {},
-            {},
-            {},
+            TaskCreatorUiState("2026-03-22","","",""),
             {}
         )
     }
