@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 class TaskPresenter(
     planRepository: PlanRepository,
-    private val date: State<LocalDate> //TODO check if this can be just a param
+    date: State<LocalDate> //TODO check if this can be just a param
 ) {
     val selected: State<List<Task>> = derivedStateOf {
         planRepository.plan.value[date.value]?.values?.sortedBy { it.time } ?: emptyList()

@@ -26,7 +26,8 @@ fun MainMenuTile(content: MainMenuItem, onClick: () -> Unit, modifier: Modifier 
             .aspectRatio(1f)
             .clickable(
                 interactionSource = interactionSource,
-                onClick = onClick
+                onClick = onClick,
+                indication = null
             )
     ) {
         Column(

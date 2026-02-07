@@ -36,7 +36,7 @@ fun TaskManagerContent(
     ) {
         innerPadding ->
         Box(
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
