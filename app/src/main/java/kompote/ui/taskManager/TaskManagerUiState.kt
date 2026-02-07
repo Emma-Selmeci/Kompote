@@ -1,3 +1,5 @@
 package kompote.ui.taskManager
 
-data class TaskManagerUiState(val dayString: String, val events: List<String>)
+import kompote.domain.task.Task
+
+data class TaskManagerUiState(val dayString: String, val tasks: List<Task>)

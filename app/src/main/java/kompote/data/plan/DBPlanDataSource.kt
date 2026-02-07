@@ -7,7 +7,6 @@ import kompote.data.TextFileWriter
 import kotlinx.serialization.SerializationException
 import java.io.File
 import java.io.FileNotFoundException
-import java.time.LocalDate
 
 class DBPlanDataSource(
     private val reader: TextFileReader,
@@ -16,20 +15,20 @@ class DBPlanDataSource(
     private val serializer: PlanSerializer,
     private val rootDir: File
 ): PlanDataSource {
-    override fun loadPlans(): Map<LocalDate, List<String>> {
+    override fun loadPlans(): Plan {
         try {
             val rawData = reader.readFile(rootDir, FilePaths.PLAN_PATH)
             return parser.parsePlan(rawData)
         } catch(_: FileNotFoundException) {
-            return HashMap()
+            return Plan(emptyMap())
         } catch(e: SerializationException) {
             Log.e("Loading#","Error during parsing", e)
-            return HashMap()
+            return Plan(emptyMap())
         }
     }
 
-    override fun savePlans(plans: Map<LocalDate, List<String>>) {
-        val serializedData = serializer.serializePlan(plans)
+    override fun savePlans(plan: Plan) {
+        val serializedData = serializer.serializePlan(plan)
         writer.writeFile(rootDir, FilePaths.PLAN_PATH, serializedData)
     }
 }

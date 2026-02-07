@@ -7,10 +7,7 @@ import androidx.compose.ui.Modifier
 fun TaskManagerScreen(taskManagerViewModel: TaskManagerViewModel, modifier: Modifier = Modifier) {
     TaskManagerContent(
         taskManagerViewModel.uiState,
-        {taskManagerViewModel.onEvent(TaskManagerEvent.Back())},
-        {taskManagerViewModel.onEvent(TaskManagerEvent.PreviousDay())},
-        {taskManagerViewModel.onEvent(TaskManagerEvent.NextDay())},
-        {taskManagerViewModel.onEvent(TaskManagerEvent.DeleteEvent(it))},
+        {taskManagerViewModel.onEvent(it)},
         modifier,
     )
 }

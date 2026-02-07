@@ -5,12 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kompote.domain.task.TaskService
 import kompote.ui.navigation.NavigationIntent
 import java.time.LocalDate
 
 class TaskCreatorViewModel(
-    private val onNavigate: (NavigationIntent) -> Unit,
-    initialDay: LocalDate
+    initialDay: LocalDate,
+    private val service: TaskService,
+    private val onNavigate: (NavigationIntent) -> Unit
 ): ViewModel() {
     private val draftState = TaskDraftState()
     private var currentDay by mutableStateOf(initialDay)
@@ -32,6 +34,9 @@ class TaskCreatorViewModel(
         }
     }
     private fun submit() {
-        //TODO check, submit and clear
+        if(draftState.isSubmittable()) {
+            service.createTask(currentDay, draftState.draft)
+            draftState.clear()
+        }
     }
 }

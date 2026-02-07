@@ -3,9 +3,9 @@ package kompote.ui.calendar
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import kompote.domain.PlanRepository
+import kompote.domain.task.TaskPresenter
 import kompote.ui.navigation.NavigationIntent
 import java.time.LocalDate
 
@@ -14,20 +14,20 @@ class CalendarViewModel(
     initialDay: LocalDate,
     private val onNavigate: (NavigationIntent) -> Unit
 ): ViewModel() {
-
-    private var currentDay by mutableStateOf(initialDay)
+    private var currentDay = mutableStateOf(initialDay)
+    private val taskPresenter = TaskPresenter(planRepository, currentDay)
 
     val uiState by derivedStateOf {
         CalendarUiState(
-        currentDay.toString(),
-        planRepository.getEventsForDay(currentDay)
+        currentDay.value.toString(),
+            taskPresenter.selected.value //TODO check if this can be constructed here
     )}
 
     fun onEvent(event: CalendarEvent) {
         when(event) {
             is CalendarEvent.Back -> onNavigate(NavigationIntent.Back)
-            is CalendarEvent.NextDay -> currentDay = currentDay.plusDays(1)
-            is CalendarEvent.PreviousDay -> currentDay = currentDay.minusDays(1)
+            is CalendarEvent.NextDay -> currentDay.value = currentDay.value.plusDays(1)
+            is CalendarEvent.PreviousDay -> currentDay.value = currentDay.value.minusDays(1)
         }
     }
 }

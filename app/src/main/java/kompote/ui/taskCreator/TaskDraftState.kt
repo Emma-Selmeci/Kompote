@@ -27,4 +27,8 @@ class TaskDraftState {
 
     fun isSubmittable() =
         draft.isSubmittable()
+
+    fun clear() {
+        draft = TaskDraft("", "", "")
+    }
 }

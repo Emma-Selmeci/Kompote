@@ -15,18 +15,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import kompote.domain.task.Task
+import kompote.ui.theme.KompoteTheme
+import java.time.Duration
+import java.time.LocalTime
 
 @Composable
 fun TaskManagerContent(
     uiState: TaskManagerUiState,
-    onBack: () -> Unit,
-    onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onDeleteEvent: (String) -> Unit,
+    onEvent: (TaskManagerEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler {
-        onBack()
+        onEvent(TaskManagerEvent.Back())
     }
 
     Scaffold(
@@ -41,9 +43,7 @@ fun TaskManagerContent(
         ) {
             TaskManagerInnerPadding(
                 uiState,
-                onPreviousClick,
-                onNextClick,
-                onDeleteEvent
+                onEvent
             )
         }
     }
@@ -52,10 +52,8 @@ fun TaskManagerContent(
 @Composable
 fun TaskManagerInnerPadding(
     uiState: TaskManagerUiState,
-    onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onDeleteEvent: (String) -> Unit
-) {
+    onEvent: (TaskManagerEvent) -> Unit
+    ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -63,21 +61,21 @@ fun TaskManagerInnerPadding(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = onPreviousClick,
+                onClick = {onEvent(TaskManagerEvent.PreviousDay())}
             ) {
                 Text("Previous")
             }
             Text(uiState.dayString)
             Button(
-                onClick = onNextClick,
+                onClick = {onEvent(TaskManagerEvent.NextDay())}
             ) {
                 Text("Next")
             }
         }
         LazyColumn {
-            items(uiState.events) {
+            items(uiState.tasks) {
                 EventBox(it) {
-                    onDeleteEvent(it)
+                    onEvent(TaskManagerEvent.DeleteEvent(it.id))
                 }
             }
         }
@@ -86,17 +84,33 @@ fun TaskManagerInnerPadding(
 
 @Composable
 fun EventBox(
-    eventString: String,
+    event: Task,
     onDelete: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(eventString)
+        val contentString = "${event.time}: ${event.name} (${event.duration.toMinutes()} min)"
+        Text(contentString)
         Button(
             onDelete
         ) {
             Text("Remove event")
         }
+    }
+}
+
+@Preview
+@Composable
+fun TaskManagerContentPreview() {
+    val taskList = listOf(
+        Task(0,"Code", LocalTime.of(11,0), Duration.ofMinutes(60))
+    )
+    val uiState = TaskManagerUiState("2026-03-22", taskList)
+    KompoteTheme {
+        TaskManagerContent(
+            uiState,
+            {}
+        )
     }
 }

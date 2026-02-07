@@ -1,11 +1,9 @@
 package kompote.data.plan
 
-import java.time.LocalDate
-
 class FakePlanDataSource(
-    private val initialData: Map<LocalDate, List<String>>
+    private val initialData: Plan
 ): PlanDataSource {
     override fun loadPlans() = initialData
 
-    override fun savePlans(plans: Map<LocalDate, List<String>>) {}
+    override fun savePlans(plan: Plan) {}
 }

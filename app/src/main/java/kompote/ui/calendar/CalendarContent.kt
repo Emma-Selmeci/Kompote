@@ -13,23 +13,30 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kompote.domain.task.Task
 import kompote.ui.misc.SimpleTopBar
 import kompote.ui.theme.KompoteTheme
+import java.time.Duration
+import java.time.LocalTime
 
 @Composable
 fun CalendarContent(
     uiState: CalendarUiState,
-    onPreviousClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onEvent: (CalendarEvent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     BackHandler {
-        onBackClick()
+        onEvent(CalendarEvent.Back())
     }
     Scaffold(
-        topBar = {SimpleTopBar(uiState.dayString,onBackClick)},
-        bottomBar = {CalendarBottomBar(onPreviousClick,onNextClick)},
+        topBar = {SimpleTopBar(
+            uiState.dayString,
+            {onEvent(CalendarEvent.Back())}
+        )},
+        bottomBar = {CalendarBottomBar(
+            {onEvent(CalendarEvent.PreviousDay())},
+            {onEvent(CalendarEvent.NextDay())}
+        )},
         modifier = modifier.systemBarsPadding()
     ) {
         innerPadding ->
@@ -68,25 +75,24 @@ fun CalendarBottomBar(
 }
 
 @Composable
-fun CalendarEntry(content: String) {
-    Text(content)
+fun CalendarEntry(content: Task) {
+    val contentString = "${content.time}: ${content.name} (${content.duration.toMinutes()} min)"
+    Text(contentString)
 }
 
 @Preview
 @Composable
 fun CalendarContentPreview() {
+    val uiState = CalendarUiState(
+        "2026-03-22",
+        listOf(
+            Task(1L, "Cook lunch", LocalTime.of(11,0), Duration.ofMinutes(60)),
+            Task(2L, "Code", LocalTime.of(12,0), Duration.ofMinutes(15)),
+        )
+    )
     KompoteTheme {
         CalendarContent(
-            CalendarUiState(
-                "2026.01.23",
-                listOf(
-                    "Buying books (14:00-15:00)",
-                    "Buying books (16:00-17:00)",
-                    "Buying books (17:00-18:00)"
-                )
-            ),
-            {},
-            {},
+            uiState,
             {}
         )
     }

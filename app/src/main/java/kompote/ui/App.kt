@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kompote.domain.PlanRepository
+import kompote.domain.task.TaskService
 import kompote.ui.calendar.CalendarScreen
 import kompote.ui.calendar.CalendarViewModel
 import kompote.ui.calendar.CalendarViewModelFactory
@@ -26,6 +27,7 @@ import java.time.LocalDate
 fun App(
     screenStateViewModel: ScreenStateViewModel,
     planRepository: PlanRepository,
+    taskService: TaskService,
     modifier: Modifier = Modifier
 ) {
     when(screenStateViewModel.screen) {
@@ -54,6 +56,7 @@ fun App(
             val viewModel: TaskCreatorViewModel = viewModel (
                 factory = TaskCreatorViewModelFactory(
                     {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)},
+                    taskService,
                     LocalDate.now())
             )
             TaskCreatorScreen(viewModel, modifier)
@@ -63,6 +66,7 @@ fun App(
             val viewModel: TaskManagerViewModel = viewModel (
                 factory = TaskManagerViewModelFactory(
                     planRepository,
+                    taskService,
                     LocalDate.now(),
                     {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)})
             )
