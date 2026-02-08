@@ -2,14 +2,19 @@ package kompote.domain.task
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
-import kompote.domain.PlanRepository
 import java.time.LocalDate
 
 class TaskPresenter(
-    planRepository: PlanRepository,
-    date: State<LocalDate> //TODO check if this can be just a param
+    taskRepository: TaskRepository,
+    selectedDate: State<LocalDate>,
 ) {
-    val selected: State<List<Task>> = derivedStateOf {
-        planRepository.plan.value[date.value]?.values?.sortedBy { it.time } ?: emptyList()
+    val tasksForDateInOrder: State<List<Task>> = derivedStateOf {
+        taskRepository.tasks.value.values
+            .filter {
+                it.date == selectedDate.value
+            }
+            .sortedBy {
+                it.time
+            }
     }
 }

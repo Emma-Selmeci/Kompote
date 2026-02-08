@@ -18,8 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import kompote.domain.task.Task
 import kompote.ui.theme.KompoteTheme
-import java.time.Duration
-import java.time.LocalTime
+import kompote.utils.preview.getTestTaskListSingleDay
 
 @Composable
 fun TaskManagerContent(
@@ -103,10 +102,7 @@ fun EventBox(
 @Preview
 @Composable
 fun TaskManagerContentPreview() {
-    val taskList = listOf(
-        Task(0,"Code", LocalTime.of(11,0), Duration.ofMinutes(60))
-    )
-    val uiState = TaskManagerUiState("2026-03-22", taskList)
+    val uiState = TaskManagerUiState("2026-03-22", getTestTaskListSingleDay().tasks)
     KompoteTheme {
         TaskManagerContent(
             uiState,

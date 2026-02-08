@@ -4,10 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kompote.data.plan.FakePlanDataSource
-import kompote.domain.PlanRepository
+import kompote.data.plan.FakeEventDataSource
+import kompote.data.task.FakeTaskDataSource
+import kompote.domain.event.EventRepository
+import kompote.domain.task.TaskRepository
 import kompote.ui.theme.KompoteTheme
-import kompote.utils.preview.getExamplePlan
+import kompote.utils.preview.getTestEventListMultipleDays
+import kompote.utils.preview.getTestTaskListMultipleDays
 import java.time.LocalDate
 
 @Composable
@@ -22,11 +25,12 @@ fun CalendarScreen(viewModel: CalendarViewModel, modifier: Modifier = Modifier) 
 @Preview
 @Composable
 fun CalendarScreenPreview() {
-
-    val repository = PlanRepository(FakePlanDataSource(getExamplePlan()))
+    val eventRepository = EventRepository(FakeEventDataSource(getTestEventListMultipleDays()))
+    val taskRepository = TaskRepository(FakeTaskDataSource(getTestTaskListMultipleDays()))
     val calendarViewModel: CalendarViewModel = viewModel(
         factory = CalendarViewModelFactory(
-            repository,
+            eventRepository,
+            taskRepository,
             LocalDate.of(2026,3,22)
         ) {}
     )

@@ -82,6 +82,10 @@ Safold(
 }
 ```
 
+### AlertDialog
+
+Pop-up dialog
+
 ### Text
 
 ```

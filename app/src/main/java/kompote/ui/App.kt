@@ -3,7 +3,8 @@ package kompote.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kompote.domain.PlanRepository
+import kompote.domain.event.EventRepository
+import kompote.domain.task.TaskRepository
 import kompote.domain.task.TaskService
 import kompote.ui.calendar.CalendarScreen
 import kompote.ui.calendar.CalendarViewModel
@@ -26,7 +27,8 @@ import java.time.LocalDate
 @Composable
 fun App(
     screenStateViewModel: ScreenStateViewModel,
-    planRepository: PlanRepository,
+    eventRepository: EventRepository,
+    taskRepository: TaskRepository,
     taskService: TaskService,
     modifier: Modifier = Modifier
 ) {
@@ -45,7 +47,7 @@ fun App(
 
         Screen.Calendar -> {
             val viewModel: CalendarViewModel = viewModel(
-                factory = CalendarViewModelFactory(planRepository, LocalDate.now(), onNavigate = {
+                factory = CalendarViewModelFactory(eventRepository, taskRepository, LocalDate.now(), onNavigate = {
                         intent -> screenStateViewModel.navigate(Screen.Calendar, intent)
                     })
             )
@@ -65,7 +67,7 @@ fun App(
         Screen.TaskManager -> {
             val viewModel: TaskManagerViewModel = viewModel (
                 factory = TaskManagerViewModelFactory(
-                    planRepository,
+                    taskRepository,
                     taskService,
                     LocalDate.now(),
                     {intent -> screenStateViewModel.navigate(Screen.TaskCreator, intent)})

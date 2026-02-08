@@ -1,4 +1,4 @@
-package kompote.domain.task
+package kompote.domain.event
 
 import kompote.data.serializer.DurationSerializer
 import kompote.data.serializer.LocalDateSerializer
@@ -9,9 +9,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Serializable
-data class Task(
+data class Event(
     val id: Long,
-    val name: String,
+    val taskId: Long,
     @Serializable(with = LocalDateSerializer::class)
     val date: LocalDate,
     @Serializable(with = LocalTimeSerializer::class)

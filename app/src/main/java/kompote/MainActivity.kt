@@ -38,8 +38,9 @@ class MainActivity : ComponentActivity() {
                 if(screenStateViewModel.isInitialized) {
                     App(
                         screenStateViewModel,
-                        appInitializer.planRepository,
-                        appInitializer.taskService
+                        appInitializer.eventRepository,
+                        appInitializer.taskRepository,
+                        appInitializer.taskService,
                     )
                 } else {
                     LoadingScreen()

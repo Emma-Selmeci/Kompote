@@ -3,18 +3,23 @@ package kompote
 import android.os.Environment
 import kompote.data.TextFileReader
 import kompote.data.TextFileWriter
-import kompote.data.plan.DBPlanDataSource
-import kompote.data.plan.DBTaskIdDataSource
-import kompote.data.plan.PlanParser
-import kompote.data.plan.PlanSerializer
-import kompote.domain.PlanRepository
+import kompote.data.app.DBMetaDataSource
+import kompote.data.plan.DBEventDataSource
+import kompote.data.plan.EventParser
+import kompote.data.plan.EventSerializer
+import kompote.data.task.DBTaskDataSource
+import kompote.data.task.TaskParser
+import kompote.data.task.TaskSerializer
+import kompote.domain.event.EventRepository
 import kompote.domain.task.TaskIdGenerator
+import kompote.domain.task.TaskRepository
 import kompote.domain.task.TaskService
 import kompote.domain.task.TaskServiceImpl
 import java.io.File
 
 class AppInitializer() {
-    lateinit var planRepository: PlanRepository private set
+    lateinit var eventRepository: EventRepository private set
+    lateinit var taskRepository: TaskRepository private set
     lateinit var taskService: TaskService private set
     fun init() {
         val rootDirectory = File(
@@ -25,30 +30,42 @@ class AppInitializer() {
         val reader = TextFileReader()
         val writer = TextFileWriter()
 
-        val planDataSource = DBPlanDataSource(
+        val eventDataSource = DBEventDataSource(
             reader,
             writer,
-            PlanParser(),
-            PlanSerializer(),
+            EventParser(),
+            EventSerializer(),
             rootDirectory
         )
 
-        val taskIdDataSource = DBTaskIdDataSource(
+        val taskDataSource = DBTaskDataSource(
+            reader,
+            writer,
+            TaskParser(),
+            TaskSerializer(),
+            rootDirectory,
+        )
+
+        val metaDataSource = DBMetaDataSource(
             reader,
             writer,
             rootDirectory
         )
 
-        val taskIdGenerator = TaskIdGenerator(taskIdDataSource)
+        val taskIdGenerator = TaskIdGenerator(metaDataSource)
 
-        planRepository = PlanRepository(
-            planDataSource
+        eventRepository = EventRepository(
+            eventDataSource
+        )
+        taskRepository = TaskRepository(
+            taskDataSource
         )
 
-        planRepository.load()
+        eventRepository.load()
+        taskRepository.load()
 
         taskService = TaskServiceImpl(
-            planRepository, taskIdGenerator
+            taskRepository, taskIdGenerator
         )
     }
 }

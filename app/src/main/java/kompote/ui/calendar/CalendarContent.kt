@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import kompote.domain.task.Task
 import kompote.ui.misc.SimpleTopBar
 import kompote.ui.theme.KompoteTheme
 import java.time.Duration
@@ -131,8 +130,8 @@ fun CalendarContentPreview() {
     val uiState = CalendarUiState(
         "2026-03-22",
         listOf(
-            Task(1L, "Cook lunch", LocalTime.of(11,0), Duration.ofMinutes(45)),
-            Task(2L, "Code", LocalTime.of(12,0), Duration.ofMinutes(15)),
+            EventUi("Eat pizza", LocalTime.of(11,0), Duration.ofMinutes(60)),
+            EventUi("Code", LocalTime.of(12,0), Duration.ofMinutes(120)),
         )
     )
     KompoteTheme {
