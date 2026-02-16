@@ -1,11 +1,13 @@
 package kompote.domain.task
 
 import kompote.data.serializer.localTimeOf
+import kompote.domain.schedule.ScheduleService
 import java.time.Duration
 import java.time.LocalDate
 
 class TaskServiceImpl(
     private val taskRepository: TaskRepository,
+    private val scheduleService: ScheduleService,
     private val taskIdGenerator: TaskIdGenerator,
 ): TaskService {
     override fun createTask(day: LocalDate, draft: TaskDraft) {
@@ -21,9 +23,11 @@ class TaskServiceImpl(
         )
 
         taskRepository.addTask(task)
+        scheduleService.onTasksChanged()
     }
 
     override fun removeTask(taskId: Long) {
         taskRepository.removeTask(taskId)
+        scheduleService.onTasksChanged()
     }
 }

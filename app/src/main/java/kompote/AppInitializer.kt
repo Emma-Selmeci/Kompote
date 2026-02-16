@@ -10,7 +10,11 @@ import kompote.data.event.EventSerializer
 import kompote.data.task.DBTaskDataSource
 import kompote.data.task.TaskParser
 import kompote.data.task.TaskSerializer
+import kompote.domain.event.EventIdGenerator
 import kompote.domain.event.EventRepository
+import kompote.domain.schedule.ScheduleService
+import kompote.domain.schedule.ScheduleServiceImpl
+import kompote.domain.schedule.Scheduler
 import kompote.domain.task.TaskIdGenerator
 import kompote.domain.task.TaskRepository
 import kompote.domain.task.TaskService
@@ -21,6 +25,7 @@ class AppInitializer() {
     lateinit var eventRepository: EventRepository private set
     lateinit var taskRepository: TaskRepository private set
     lateinit var taskService: TaskService private set
+    lateinit var scheduleService: ScheduleService private set
     fun init() {
         val rootDirectory = File(
             Environment.getExternalStorageDirectory(),
@@ -53,10 +58,14 @@ class AppInitializer() {
         )
 
         val taskIdGenerator = TaskIdGenerator(metaDataSource)
+        val eventIdGenerator = EventIdGenerator(metaDataSource)
+
+        val scheduler = Scheduler(eventIdGenerator)
 
         eventRepository = EventRepository(
             eventDataSource
         )
+
         taskRepository = TaskRepository(
             taskDataSource
         )
@@ -64,8 +73,17 @@ class AppInitializer() {
         eventRepository.load()
         taskRepository.load()
 
-        taskService = TaskServiceImpl(
-            taskRepository, taskIdGenerator
+        scheduleService = ScheduleServiceImpl(
+            taskRepository,
+            eventRepository,
+            scheduler
         )
+
+        taskService = TaskServiceImpl(
+            taskRepository,
+            scheduleService,
+            taskIdGenerator
+        )
+
     }
 }

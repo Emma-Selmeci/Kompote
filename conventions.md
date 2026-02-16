@@ -2,7 +2,8 @@
 
 ## Constructor argument order
 
-1. Other dependency
-2. Repository dependency
-3. Constructor parameter
-4. Lambda
+1. Repository dependency
+2. Service dependency
+3. Other dependency (idGenerator...)
+4. Constructor parameter
+5. Lambda
