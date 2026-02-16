@@ -4,9 +4,9 @@ import android.os.Environment
 import kompote.data.TextFileReader
 import kompote.data.TextFileWriter
 import kompote.data.app.DBMetaDataSource
-import kompote.data.plan.DBEventDataSource
-import kompote.data.plan.EventParser
-import kompote.data.plan.EventSerializer
+import kompote.data.event.DBEventDataSource
+import kompote.data.event.EventParser
+import kompote.data.event.EventSerializer
 import kompote.data.task.DBTaskDataSource
 import kompote.data.task.TaskParser
 import kompote.data.task.TaskSerializer

@@ -1,4 +1,4 @@
-package kompote.data.plan
+package kompote.data.event
 
 import kompote.domain.event.EventList
 import kotlinx.serialization.json.Json

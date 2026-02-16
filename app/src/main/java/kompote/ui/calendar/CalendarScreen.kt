@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kompote.data.plan.FakeEventDataSource
+import kompote.data.event.FakeEventDataSource
 import kompote.data.task.FakeTaskDataSource
 import kompote.domain.event.EventRepository
 import kompote.domain.task.TaskRepository
